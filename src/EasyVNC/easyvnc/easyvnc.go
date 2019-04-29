@@ -383,5 +383,7 @@ func (vnc *EasyVNC) Line(x1, y1, x2, y2 int, color int) {
 			x := (y-y1)*(x2-x1)/(y2-y1) + x1
 			vnc.PSET(x, y, color)
 		}
+	} else {
+		vnc.PSET(x1, y1, color)
 	}
 }
