@@ -2,6 +2,7 @@ package easyvnc
 
 import (
 	"fmt"
+	"math"
 	"net"
 	"strconv"
 )
@@ -385,5 +386,39 @@ func (vnc *EasyVNC) Line(x1, y1, x2, y2 int, color int) {
 		}
 	} else {
 		vnc.PSET(x1, y1, color)
+	}
+}
+
+func (vnc *EasyVNC) Arc(x, y int, rx, ry int, color int) {
+	if rx == 0 || ry == 0 {
+		return
+	}
+	old_dy := ry
+	for dx := 1; ; dx++ {
+		tmp := math.Sqrt(float64(rx*rx - dx*dx))
+		tmp = tmp * float64(ry) / float64(rx)
+		dy := int(tmp)
+		vnc.Line(x+dx-1, y+old_dy, x+dx, y+dy, color)
+		vnc.Line(x+dx-1, y-old_dy, x+dx, y-dy, color)
+		vnc.Line(x-dx+1, y+old_dy, x-dx, y+dy, color)
+		vnc.Line(x-dx+1, y-old_dy, x-dx, y-dy, color)
+		if ry*ry*dx > rx*rx*dy {
+			break
+		}
+		old_dy = dy
+	}
+	old_dx := rx
+	for dy := 1; ; dy++ {
+		tmp := math.Sqrt(float64(ry*ry - dy*dy))
+		tmp = tmp * float64(rx) / float64(ry)
+		dx := int(tmp)
+		vnc.Line(x+old_dx, y+dy-1, x+dx, y+dy, color)
+		vnc.Line(x+old_dx, y-dy+1, x+dx, y-dy, color)
+		vnc.Line(x-old_dx, y+dy-1, x-dx, y+dy, color)
+		vnc.Line(x-old_dx, y-dy+1, x-dx, y-dy, color)
+		if ry*ry*dx < rx*rx*dy {
+			break
+		}
+		old_dx = dx
 	}
 }

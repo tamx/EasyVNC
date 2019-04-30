@@ -42,6 +42,7 @@ func main() {
 			vnc.Line(0, 0, 600, 600, 0x00ff00)
 			vnc.Line(0, 0, 800, 600, 0x0000ff)
 			vnc.Line(x1, y1, x2, y2, 0xffffff)
+			vnc.Arc(400, 300, 300, 200, 0xff0000)
 			vnc.SendAllFrameData()
 		}
 		ox1 = nx1
