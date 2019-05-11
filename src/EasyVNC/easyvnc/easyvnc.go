@@ -395,7 +395,7 @@ func (vnc *EasyVNC) Arc(x, y int, rx, ry int, color int) {
 	}
 	startdx := int(float64(rx*rx) / math.Sqrt(float64(rx*rx+ry*ry)))
 	for dx := startdx; dx >= 0; dx-- {
-		dy := int(math.Sqrt(float64(rx*rx-dx*dx)) * float64(ry) / float64(rx))
+		dy := int(math.Sqrt(float64(rx*rx-dx*dx))*float64(ry)/float64(rx) + 0.5)
 		vnc.PSET(x+dx, y+dy, color)
 		vnc.PSET(x+dx, y-dy, color)
 		vnc.PSET(x-dx, y+dy, color)
@@ -403,7 +403,7 @@ func (vnc *EasyVNC) Arc(x, y int, rx, ry int, color int) {
 	}
 	startdy := int(float64(ry*ry) / math.Sqrt(float64(rx*rx+ry*ry)))
 	for dy := startdy; dy >= 0; dy-- {
-		dx := int(math.Sqrt(float64(ry*ry-dy*dy)) * float64(rx) / float64(ry))
+		dx := int(math.Sqrt(float64(ry*ry-dy*dy))*float64(rx)/float64(ry) + 0.5)
 		vnc.PSET(x+dx, y+dy, color)
 		vnc.PSET(x+dx, y-dy, color)
 		vnc.PSET(x-dx, y+dy, color)
