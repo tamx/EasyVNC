@@ -21,7 +21,9 @@ func WriteByte(conn *net.TCPConn, err error, value int) error {
 	if err != nil {
 		return err
 	}
-	buf := []byte{byte(0xff & value)}
+	buf := []byte{
+		byte(0xff & value),
+	}
 	_, err = conn.Write(buf)
 	return err
 }
@@ -30,7 +32,10 @@ func WriteShort(conn *net.TCPConn, err error, value int) error {
 	if err != nil {
 		return err
 	}
-	buf := []byte{byte(0xff & (value >> 8)), byte(0xff & (value >> 0))}
+	buf := []byte{
+		byte(0xff & (value >> 8)),
+		byte(0xff & (value >> 0)),
+	}
 	_, err = conn.Write(buf)
 	return err
 }
@@ -39,8 +44,12 @@ func WriteInt(conn *net.TCPConn, err error, value int) error {
 	if err != nil {
 		return err
 	}
-	buf := []byte{byte(0xff & (value >> 24)), byte(0xff & (value >> 16)),
-		byte(0xff & (value >> 8)), byte(0xff & (value >> 0))}
+	buf := []byte{
+		byte(0xff & (value >> 24)),
+		byte(0xff & (value >> 16)),
+		byte(0xff & (value >> 8)),
+		byte(0xff & (value >> 0)),
+	}
 	_, err = conn.Write(buf)
 	return err
 }
@@ -105,7 +114,8 @@ func sendVncMessage(buf []byte) {
 }
 
 func NewEasyVNC(port int, width, height int) (*EasyVNC, error) {
-	laddr, err := net.ResolveTCPAddr("tcp4", "0.0.0.0:"+strconv.Itoa(port))
+	laddr, err := net.ResolveTCPAddr("tcp4",
+		"0.0.0.0:"+strconv.Itoa(port))
 	if err != nil {
 		return nil, err
 	}
@@ -144,7 +154,8 @@ func (vnc *EasyVNC) doNegotiation(conn *net.TCPConn) error {
 	}
 	fmt.Println("Read RFB")
 
-	_, err = conn.Write([]byte{1 /* Length */, 1 /* Security None */})
+	_, err = conn.Write([]byte{1, /* Length */
+		1 /* Security None */})
 	if err != nil {
 		return err
 	}
