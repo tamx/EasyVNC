@@ -1,5 +1,7 @@
 package easyvnc
 
+// refer to http://srgia.com/docs/rfbprotocol3.8.html
+
 import (
 	"fmt"
 	"math"
@@ -221,7 +223,6 @@ func (vnc *EasyVNC) loop(conn *net.TCPConn) error {
 			if err != nil {
 				return err
 			}
-			break
 
 		case 2: // SetEncodings
 			_, err := ReadByte(conn, nil)
@@ -235,7 +236,6 @@ func (vnc *EasyVNC) loop(conn *net.TCPConn) error {
 			if err != nil {
 				return err
 			}
-			break
 
 		case 3: // Request Paint
 			_, err := ReadByte(conn, nil) // incremental flag
@@ -249,7 +249,6 @@ func (vnc *EasyVNC) loop(conn *net.TCPConn) error {
 			// fmt.Printf("request (%d, %d) : %d x %d.\n", x, y, width, height)
 			// sendFrameData(vnc, x, y, width, height)
 			_, _, _, _ = x, y, width, height
-			break
 
 		case 5: // mouse event
 			mask, err := ReadByte(conn, nil)
@@ -262,9 +261,9 @@ func (vnc *EasyVNC) loop(conn *net.TCPConn) error {
 			if mask == 1 {
 				// sendFrameData(vnc, 0, 0, vnc.frame_width, vnc.frame_height)
 				// sendFrameData(vnc, 0, 0, 300, 200)
+				_ = mask
 			}
 			_, _, _ = x, y, mask
-			break
 
 		default:
 			fmt.Printf("type: %d\n", ptype)
