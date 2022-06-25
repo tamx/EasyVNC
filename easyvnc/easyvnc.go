@@ -1,6 +1,6 @@
 package easyvnc
 
-// refer to http://srgia.com/docs/rfbprotocol3.8.html
+// refer to https://tex2e.github.io/rfc-translater/html/rfc6143.html
 
 import (
 	"fmt"
