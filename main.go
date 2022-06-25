@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"time"
 
-	"./easyvnc"
+	"main/easyvnc"
 )
 
 func main() {

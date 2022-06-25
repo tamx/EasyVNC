@@ -59,8 +59,8 @@ func ReadByte(conn *net.TCPConn, err error) (int, error) {
 		return 0, err
 	}
 	buf := make([]byte, 1)
-	_, err = conn.Read(buf)
-	if err != nil {
+	size, err := conn.Read(buf)
+	if err != nil || size != 1 {
 		return 0, err
 	}
 	value := 0xff & int(buf[0])
@@ -72,8 +72,8 @@ func ReadShort(conn *net.TCPConn, err error) (int, error) {
 		return 0, err
 	}
 	buf := make([]byte, 2)
-	_, err = conn.Read(buf)
-	if err != nil {
+	size, err := conn.Read(buf)
+	if err != nil || size != 2 {
 		return 0, err
 	}
 	value := (0xff & int(buf[0])) << 8
@@ -86,8 +86,8 @@ func ReadInt(conn *net.TCPConn, err error) (int, error) {
 		return 0, err
 	}
 	buf := make([]byte, 4)
-	_, err = conn.Read(buf)
-	if err != nil {
+	size, err := conn.Read(buf)
+	if err != nil || size != 4 {
 		return 0, err
 	}
 	value := (0xff & int(buf[0])) << 24
@@ -102,8 +102,11 @@ func ReadSkip(conn *net.TCPConn, err error, size int) error {
 		return err
 	}
 	buf := make([]byte, size)
-	_, err = conn.Read(buf)
-	return err
+	n, err := conn.Read(buf)
+	if err != nil || n != size {
+		return err
+	}
+	return nil
 }
 
 func sendVncMessage(buf []byte) {
