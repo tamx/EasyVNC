@@ -1,10 +1,11 @@
 package main
 
 import (
-	"EasyVNC/easyvnc"
 	"fmt"
 	"math/rand"
 	"time"
+
+	"./easyvnc"
 )
 
 func main() {
